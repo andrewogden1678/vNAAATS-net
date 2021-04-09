@@ -1,11 +1,15 @@
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents.Linq;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace vNAAATS.API
 {
@@ -13,22 +17,35 @@ namespace vNAAATS.API
     {
         [FunctionName("FlightDataAllGet")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+            [CosmosDB("vnaaats-net", "vnaaats-container",
+                ConnectionStringSetting = "DbConnectionString")] 
+                DocumentClient client,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            try {
+                // URI for flight data collection
+                Uri collectionUri = UriFactory.CreateDocumentCollectionUri("vnaaats-net", "vnaaats-container");
 
-            string name = req.Query["name"];
+                // LINQ Query
+                IDocumentQuery<FlightData> query = client.CreateDocumentQuery<FlightData>(collectionUri)
+                    .AsDocumentQuery();
+                
+                // Get results
+                List<FlightData> results = new List<FlightData>();
+                foreach (FlightData result in await query.ExecuteNextAsync()) {
+                    results.Add(result);
+                }
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
-
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
-
-            return new OkObjectResult(responseMessage);
+                // Return okay if found
+                return new OkObjectResult(results);
+            } 
+            catch (Exception ex) 
+            {
+                // Catch any errors
+                log.LogError($"Could not retrieve flight data. Exception thrown: {ex.Message}.");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

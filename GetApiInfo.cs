@@ -13,7 +13,7 @@ namespace vNAAATS.API
     {
         [FunctionName("ApiInfoGet")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             string res = "This is the vNAAATS API version 1.0. The vNAAATS API serves data to currently active vNAAATS stations as well as providing a public facing API for vNAAATS data to be parsed.\nPlease contact a.ogden@vatcan.ca for more information.";

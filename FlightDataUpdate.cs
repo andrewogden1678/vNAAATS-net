@@ -1,10 +1,15 @@
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents.Linq;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace vNAAATS.API
@@ -14,21 +19,91 @@ namespace vNAAATS.API
         [FunctionName("FlightDataUpdate")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            [CosmosDB("vnaaats-net", "vnaaats-container",
+                ConnectionStringSetting = "DbConnectionString")] 
+                DocumentClient client,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            try {
+                // Check callsign
+                string callsignQuery = req.Query["callsign"];
+                if (string.IsNullOrWhiteSpace(callsignQuery))
+                {
+                    return (ActionResult)new NotFoundResult();
+                }
 
-            string name = req.Query["name"];
+                // URI for flight data collection
+                Uri collectionUri = UriFactory.CreateDocumentCollectionUri("vnaaats-net", "vnaaats-container");
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+                // LINQ Query
+                var doc = client.CreateDocumentQuery<FlightDataDocument>(collectionUri)
+                    .Where(p => p.callsign == callsignQuery)
+                    .AsEnumerable()
+                    .FirstOrDefault();
+                
+                // Null check on doc
+                if (doc == null) {
+                    return new StatusCodeResult(StatusCodes.Status404NotFound);  
+                }
 
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
+                /// Now we update all found values
+                string newLevel = req.Query["level"];
+                if (!string.IsNullOrWhiteSpace(newLevel))
+                {
+                    doc.assignedLevel = Int32.Parse(newLevel);
+                }
+                string newMach = req.Query["mach"];
+                if (!string.IsNullOrWhiteSpace(newMach))
+                {
+                    doc.assignedMach = Int32.Parse(newMach);
+                }
+                string track = req.Query["track"];
+                if (!string.IsNullOrWhiteSpace(track))
+                {
+                    doc.track = track;
+                }
+                string route = req.Query["route"];
+                if (!string.IsNullOrWhiteSpace(callsignQuery))
+                {
+                    doc.route = route;
+                }
+                string departure = req.Query["departure"];
+                if (!string.IsNullOrWhiteSpace(callsignQuery))
+                {
+                    doc.departure = departure;
+                }
+                string arrival = req.Query["arrival"];
+                if (!string.IsNullOrWhiteSpace(callsignQuery))
+                {
+                    doc.arrival = arrival;
+                }
+                string isEquipped = req.Query["isEquipped"];
+                if (!string.IsNullOrWhiteSpace(callsignQuery))
+                {
+                    doc.isEquipped = Convert.ToBoolean(isEquipped);
+                }
+                string trackedBy = req.Query["trackedBy"];
+                if (!string.IsNullOrWhiteSpace(callsignQuery))
+                {
+                    doc.trackedBy = trackedBy;
+                }
 
-            return new OkObjectResult(responseMessage);
+                // Update last updated
+                doc.lastUpdated = DateTime.UtcNow;
+
+                // And finally we replace
+                await client.ReplaceDocumentAsync(doc);
+                
+                // Return 200 code
+                return new StatusCodeResult(StatusCodes.Status200OK);  
+            } 
+            catch (Exception ex) 
+            {
+                // Catch any errors
+                log.LogError($"Could not update flight data. Exception thrown: {ex.Message}.");
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);  
+            }
+            
         }
     }
 }
