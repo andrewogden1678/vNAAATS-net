@@ -15,14 +15,12 @@ namespace vNAAATS.API
         [FunctionName("FlightDataNewPost")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req, 
-            [CosmosDB(
-                databaseName: "DbName",
-                collectionName: "DbContainer",
+            [CosmosDB("vnaaats-net", "vnaaats-container",
                 ConnectionStringSetting = "DbConnectionString")] IAsyncCollector<object> flights,
             ILogger log)
         {
             try {
-                // Serialise the request
+                // Deserialise the request
                 string request = req.Query["data"];
                 dynamic data = JsonConvert.DeserializeObject(request);
 
@@ -38,7 +36,7 @@ namespace vNAAATS.API
                     arrival = (string)data.arrival,
                     isEquipped = (bool)data.is_equipped,
                     trackedBy = (string)data.tracked_by,
-                    lastUpdated = (DateTime)data.last_updated
+                    lastUpdated = DateTime.UtcNow
                 };
 
                 // Add data object
@@ -48,7 +46,9 @@ namespace vNAAATS.API
                 log.LogInformation($"Item {fdata.callsign} inserted successfully.");
                 return new StatusCodeResult(StatusCodes.Status200OK);   
             }
-            catch (Exception ex) {
+            catch (Exception ex) 
+            {
+                // Catch any errors
                 log.LogError($"Could not insert flight data. Exception thrown: {ex.Message}.");
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);   
             }
