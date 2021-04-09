@@ -1,2 +1,3 @@
-# vNAAATS-domestic-interface
-Interface between the vNAAATS oceanic plugin and domestic controllers to allow for more efficient coordination.
+# vNAAATS-net
+
+Serverless API over Azure using Cosmos DB to network vNAAATS plugins together in order to share data.
