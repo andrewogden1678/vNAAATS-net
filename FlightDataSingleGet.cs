@@ -45,7 +45,10 @@ namespace vNAAATS.API
                     results.Add(result);
                 }
 
-                // Return okay if found
+                // Return okay if found and 404 if not
+                if (results.Count == 0) {
+                    return new StatusCodeResult(StatusCodes.Status404NotFound);
+                }
                 return new OkObjectResult(results);
             }
             catch (Exception ex) 

@@ -32,6 +32,7 @@ namespace vNAAATS.API
                     assignedMach = (int)data.assigned_mach,
                     track = (string)data.track,
                     route = (string)data.route,
+                    routeEtas = (string)data.routeEtas,
                     departure = (string)data.departure,
                     arrival = (string)data.arrival,
                     isEquipped = (bool)data.is_equipped,

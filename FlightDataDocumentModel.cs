@@ -70,6 +70,19 @@ namespace vNAAATS.API {
                 this.SetPropertyValue("route", value);
             }
         } 
+        // Route ETAs
+        public string routeEtas
+        { 
+            get 
+            {
+                return this.GetPropertyValue<string>("routeEtas");
+            }
+
+            set 
+            {
+                this.SetPropertyValue("routeEtas", value);
+            }
+        } 
         // Departure airport
         public string departure 
         { 

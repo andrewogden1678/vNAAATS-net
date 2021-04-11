@@ -13,6 +13,8 @@ namespace vNAAATS.API {
         public string track { get; set; }
         // Route
         public string route { get; set; }
+        // Route
+        public string routeEtas { get; set; }
         // Departure airport
         public string departure { get; set; }
         // Arrival airport

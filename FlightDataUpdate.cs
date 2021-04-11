@@ -67,6 +67,11 @@ namespace vNAAATS.API
                 {
                     doc.route = route;
                 }
+                string routeEtas = req.Query["routeEtas"];
+                if (!string.IsNullOrWhiteSpace(callsignQuery))
+                {
+                    doc.routeEtas = routeEtas;
+                }
                 string departure = req.Query["departure"];
                 if (!string.IsNullOrWhiteSpace(callsignQuery))
                 {
