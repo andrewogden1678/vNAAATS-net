@@ -21,22 +21,31 @@ namespace vNAAATS.API
         {
             try {
                 // Deserialise the request
-                string request = req.Query["data"];
-                dynamic data = JsonConvert.DeserializeObject(request);
+                string callsign = req.Query["callsign"];
+                int assigned_level = Convert.ToInt32(req.Query["level"]);
+                int assigned_mach = Convert.ToInt32(req.Query["mach"]);
+                string track = req.Query["track"];
+                string route = req.Query["route"];
+                string routeEtas = req.Query["routeEtas"];
+                string departure = req.Query["departure"];
+                string arrival = req.Query["arrival"];
+                bool isEquipped = req.Query["isEquipped"] == "1" ? true : false;
+                string tracked_by = req.Query["trackedBy"];
 
+                // TODO: Add ETAs
                 // Create data object
                 FlightData fdata = new FlightData 
                 {
-                    callsign = (string)data.callsign,
-                    assignedLevel = (int)data.assigned_level,
-                    assignedMach = (int)data.assigned_mach,
-                    track = (string)data.track,
-                    route = (string)data.route,
-                    routeEtas = (string)data.routeEtas,
-                    departure = (string)data.departure,
-                    arrival = (string)data.arrival,
-                    isEquipped = (bool)data.is_equipped,
-                    trackedBy = (string)data.tracked_by,
+                    callsign = callsign,
+                    assignedLevel = assigned_level,
+                    assignedMach = assigned_mach,
+                    track = track,
+                    route = route,
+                    routeEtas = routeEtas,
+                    departure = departure,
+                    arrival = arrival,
+                    isEquipped = isEquipped,
+                    trackedBy = tracked_by,
                     lastUpdated = DateTime.UtcNow
                 };
 

@@ -18,7 +18,7 @@ namespace vNAAATS.API
     public static class PurgeFlightDatas
     {
         [FunctionName("PurgeFlightDatas")]
-        public static async void Run([TimerTrigger("* */10 * * * *")]TimerInfo Timer,
+        public static async void Run([TimerTrigger("0 */8 * * * *")]TimerInfo Timer,
         [CosmosDB("vnaaats-net", "vnaaats-container",
                 ConnectionStringSetting = "DbConnectionString")] 
                 DocumentClient client,
