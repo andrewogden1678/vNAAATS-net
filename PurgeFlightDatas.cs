@@ -18,7 +18,7 @@ namespace vNAAATS.API
     public static class PurgeFlightDatas
     {
         [FunctionName("PurgeFlightDatas")]
-        public static async void Run([TimerTrigger("0 */8 * * * *")]TimerInfo Timer,
+        public static async void Run([TimerTrigger("0 */10 * * * *")]TimerInfo Timer,
         [CosmosDB("vnaaats-net", "vnaaats-container",
                 ConnectionStringSetting = "DbConnectionString")] 
                 DocumentClient client,
@@ -40,8 +40,8 @@ namespace vNAAATS.API
                     TimeSpan ts = new TimeSpan(DateTime.UtcNow.Ticks - result.lastUpdated.Ticks);
                     double timeDelta = Math.Abs(ts.TotalSeconds);
 
-                    // Check the total seconds and if it is longer than 8 hours
-                    if (timeDelta > 28800) {
+                    // Check the total seconds and if it is longer than 4 hours
+                    if (timeDelta > 18000) {
                         // Delete
                         await client.DeleteDocumentAsync(result.SelfLink, new RequestOptions { PartitionKey = new PartitionKey(result.callsign) });
                         // Increment counter
