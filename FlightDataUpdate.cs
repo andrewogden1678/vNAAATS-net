@@ -85,7 +85,7 @@ namespace vNAAATS.API
                 string isEquipped = req.Query["isEquipped"];
                 if (!string.IsNullOrWhiteSpace(callsignQuery))
                 {
-                    doc.isEquipped = Convert.ToBoolean(isEquipped);
+                    doc.isEquipped = isEquipped == "1" ? true : false;
                 }
                 string trackedBy = req.Query["trackedBy"];
                 if (!string.IsNullOrWhiteSpace(callsignQuery))
