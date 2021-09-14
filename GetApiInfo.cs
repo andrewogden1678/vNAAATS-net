@@ -16,7 +16,7 @@ namespace vNAAATS.API
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            string res = "Version 1.0";
+            string res = "Version 1.1";
 
             return (ActionResult)new OkObjectResult(res);
         }

@@ -47,13 +47,18 @@ namespace vNAAATS.API
                 }
 
                 /// Now we update all found values
+                string type = req.Query["type"];
+                if (!string.IsNullOrWhiteSpace(type))
+                {
+                    doc.type = type;
+                }
                 string newLevel = req.Query["level"];
-                if (!string.IsNullOrWhiteSpace(newLevel))
+                if (!string.IsNullOrWhiteSpace(newLevel) && newLevel.Length == 4)
                 {
                     doc.assignedLevel = Int32.Parse(newLevel);
                 }
                 string newMach = req.Query["mach"];
-                if (!string.IsNullOrWhiteSpace(newMach))
+                if (!string.IsNullOrWhiteSpace(newMach) && newMach.Length == 4)
                 {
                     doc.assignedMach = Int32.Parse(newMach);
                 }
@@ -82,15 +87,55 @@ namespace vNAAATS.API
                 {
                     doc.arrival = arrival;
                 }
+                string newDirection = req.Query["direction"];
+                if (!string.IsNullOrWhiteSpace(newDirection) && (newDirection == "0" || newDirection == "1"))
+                {
+                    doc.direction = newDirection == "1" ? true : false;
+                }
+                string newEtd = req.Query["etd"];
+                if (!string.IsNullOrWhiteSpace(newEtd) && newEtd.Length == 4)
+                {
+                    doc.etd = newEtd;
+                }
+                string newSelcal = req.Query["selcal"];
+                if (!string.IsNullOrWhiteSpace(newSelcal) && newSelcal.Length == 4)
+                {
+                    doc.selcal = newSelcal;
+                }
+                string newDatalink = req.Query["connectedDatalink"];
+                if (!string.IsNullOrWhiteSpace(newDatalink) && (newDatalink == "0" || newDatalink == "1"))
+                {
+                    doc.connectedDatalink = newDatalink == "1" ? true : false;
+                }
                 string isEquipped = req.Query["isEquipped"];
                 if (!string.IsNullOrWhiteSpace(callsignQuery))
                 {
                     doc.isEquipped = isEquipped == "1" ? true : false;
                 }
+                string newState = req.Query["state"];
+                if (!string.IsNullOrWhiteSpace(newState))
+                {
+                    doc.state = newState;
+                }
+                string newRelevant = req.Query["relevant"];
+                if (!string.IsNullOrWhiteSpace(newRelevant) && (newRelevant == "0" || newRelevant == "1"))
+                {
+                    doc.relevant = newRelevant == "1" ? true : false;
+                }
+                string targetMode = req.Query["targetMode"];
+                if (!string.IsNullOrWhiteSpace(targetMode))
+                {
+                    doc.targetMode = (TargetMode)Convert.ToInt32(targetMode);
+                }
                 string trackedBy = req.Query["trackedBy"];
                 if (!string.IsNullOrWhiteSpace(callsignQuery))
                 {
                     doc.trackedBy = trackedBy;
+                }
+                string trackedById = req.Query["trackedById"];
+                if (!string.IsNullOrWhiteSpace(callsignQuery))
+                {
+                    doc.trackedById = trackedById;
                 }
 
                 // Update last updated

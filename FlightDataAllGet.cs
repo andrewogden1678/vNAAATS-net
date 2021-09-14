@@ -24,6 +24,28 @@ namespace vNAAATS.API
             ILogger log)
         {
             try {
+                /// PARAMETERS
+                int sorting = -1; // Sorting -> -1: not found in request, 0: ascending, 1: descending
+                bool relevant = false; // We get all by default
+
+                // Grab the sort parameter if it exists
+                string queryTerm = req.Query["sort"];
+                if (!string.IsNullOrWhiteSpace(queryTerm) && int.TryParse(queryTerm, out var res))
+                {
+                    // Parse to sorting if it exists
+                    if (res > -1 && res < 2) {
+                        sorting = Int32.Parse(queryTerm);
+                    }
+                }
+
+                // Get all only relevant
+                queryTerm = req.Query["relevant"];
+                if (!string.IsNullOrWhiteSpace(queryTerm)) {
+                    if (queryTerm.ToLower() == "true") {
+                        relevant = true;
+                    }
+                }
+
                 // URI for flight data collection
                 Uri collectionUri = UriFactory.CreateDocumentCollectionUri("vnaaats-net", "vnaaats-container");
 
@@ -34,7 +56,24 @@ namespace vNAAATS.API
                 // Get results
                 List<FlightData> results = new List<FlightData>();
                 foreach (FlightData result in await query.ExecuteNextAsync()) {
-                    results.Add(result);
+                    if (relevant && result.relevant) // if relevant then only add if the property is true in the flight object
+                    {
+                        results.Add(result);
+                        continue;
+                    }
+                    results.Add(result); // add them all
+                }
+                
+                // Sort if needed
+                if (sorting != -1) {
+                    if (sorting == 0) // ascending
+                    {
+                        results.Sort((x, y) => x.assignedLevel.CompareTo(y.assignedLevel));
+                    } 
+                    else // descending
+                    {
+                        results.Sort((x, y) => y.assignedLevel.CompareTo(x.assignedLevel));
+                    }
                 }
 
                 // Return okay if found

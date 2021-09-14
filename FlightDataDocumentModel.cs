@@ -17,7 +17,19 @@ namespace vNAAATS.API {
             {
                 this.SetPropertyValue("callsign", value);
             }
-        } 
+        }
+        // Aircraft type
+        public string type
+        {
+            get
+            {
+                return this.GetPropertyValue<string>("type");
+            }
+            set
+            {
+                this.SetPropertyValue("type", value);
+            }
+        }
         // Assigned level
         public int assignedLevel 
         { 
@@ -109,6 +121,56 @@ namespace vNAAATS.API {
                 this.SetPropertyValue("arrival", value);
             }
         } 
+        // Direction
+        public bool direction
+        {
+            get
+            {
+                return this.GetPropertyValue<bool>("direction");
+            }
+            set
+            {
+                this.SetPropertyValue("direction", value);
+            }
+        }
+        // Etd
+        public string etd
+        {
+            get
+            {
+                return this.GetPropertyValue<string>("etd");
+            }
+
+            set
+            {
+                this.SetPropertyValue("etd", value);
+            }
+        }
+        // Selcal code
+        public string selcal
+        {
+            get
+            {
+                return this.GetPropertyValue<string>("selcal");
+            }
+
+            set
+            {
+                this.SetPropertyValue("selcal", value);
+            }
+        }
+        // Datalink connection status
+        public bool connectedDatalink
+        {
+            get
+            {
+                return this.GetPropertyValue<bool>("connectedDatalink");
+            }
+            set
+            {
+                this.SetPropertyValue("connectedDatalink", value);
+            }
+        }
         // ADS-B Equipment status
         public bool isEquipped 
         { 
@@ -121,7 +183,43 @@ namespace vNAAATS.API {
             {
                 this.SetPropertyValue("isEquipped", value);
             }
-        } 
+        }
+        public string state
+        {
+            get
+            {
+                return this.GetPropertyValue<string>("state");
+            }
+
+            set
+            {
+                this.SetPropertyValue("state", value);
+            }
+        }
+        public bool relevant
+        {
+            get
+            {
+                return this.GetPropertyValue<bool>("relevant");
+            }
+            set
+            {
+                this.SetPropertyValue("relevant", value);
+            }
+        }
+        // Aircraft target mode (ads-b, etc)
+        public TargetMode targetMode
+        {
+            get
+            {
+                return (TargetMode) this.GetPropertyValue<int>("targetMode");
+            }
+
+            set
+            {
+                this.SetPropertyValue("targetMode", value);
+            }
+        }
         // Current controller tracking
         public string trackedBy 
         { 
@@ -134,7 +232,20 @@ namespace vNAAATS.API {
             {
                 this.SetPropertyValue("trackedBy", value);
             }
-        } 
+        }
+        // Current controller tracking (sector ID)
+        public string trackedById
+        {
+            get
+            {
+                return this.GetPropertyValue<string>("trackedById");
+            }
+
+            set
+            {
+                this.SetPropertyValue("trackedById", value);
+            }
+        }
         // Last updated
         public DateTime lastUpdated 
         { 

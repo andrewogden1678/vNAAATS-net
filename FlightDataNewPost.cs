@@ -22,30 +22,52 @@ namespace vNAAATS.API
             try {
                 // Deserialise the request
                 string callsign = req.Query["callsign"];
-                int assigned_level = Convert.ToInt32(req.Query["level"]);
-                int assigned_mach = Convert.ToInt32(req.Query["mach"]);
+                string ac_type = req.Query["type"];
+                int assignedLevel = Convert.ToInt32(req.Query["level"]);
+                int assignedMach = Convert.ToInt32(req.Query["mach"]);
                 string track = req.Query["track"];
                 string route = req.Query["route"];
                 string routeEtas = req.Query["routeEtas"];
                 string departure = req.Query["departure"];
                 string arrival = req.Query["arrival"];
+                bool direction = req.Query["direction"] == "1" ? true : false;
+                string etd = req.Query["etd"];
+                string selcal = req.Query["selcal"];
+                bool datalink = req.Query["connected_datalink"] == "1" ? true : false;
+                if (string.IsNullOrWhiteSpace(req.Query["connectedDatalink"]))
+                    datalink = false;
+                else
+                    datalink = req.Query["datalink"] == "1" ? true : false;
                 bool isEquipped = req.Query["isEquipped"] == "1" ? true : false;
-                string tracked_by = req.Query["trackedBy"];
+                string state = req.Query["state"];
+                
+                bool relevant = req.Query["relevant"] == "1" ? true : false;
+                TargetMode targetMode = (TargetMode)Convert.ToInt32(req.Query["targetMode"]);
+                string trackedBy = req.Query["trackedBy"];
+                string trackedId = req.Query["trackedById"];
 
-                // TODO: Add ETAs
                 // Create data object
-                FlightData fdata = new FlightData 
+                FlightData fdata = new FlightData
                 {
                     callsign = callsign,
-                    assignedLevel = assigned_level,
-                    assignedMach = assigned_mach,
+                    type = ac_type,
+                    etd = etd,
+                    assignedLevel = assignedLevel,
+                    assignedMach = assignedMach,
                     track = track,
                     route = route,
                     routeEtas = routeEtas,
                     departure = departure,
                     arrival = arrival,
+                    direction = direction,
+                    selcal = selcal,
+                    datalinkConnected = datalink,
                     isEquipped = isEquipped,
-                    trackedBy = tracked_by,
+                    state = state,
+                    relevant = relevant,
+                    targetMode = targetMode,
+                    trackedBy = trackedBy,
+                    trackedById = trackedId,
                     lastUpdated = DateTime.UtcNow
                 };
 
