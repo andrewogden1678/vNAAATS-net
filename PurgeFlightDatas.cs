@@ -13,20 +13,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace vNAAATS.API
+namespace vNAAATS.NET
 {
     public static class PurgeFlightDatas
     {
         [FunctionName("PurgeFlightDatas")]
         public static async void Run([TimerTrigger("0 */10 * * * *")]TimerInfo Timer,
-        [CosmosDB("vnaaats-net", "vnaaats-container",
+        [CosmosDB("vnaaats-net", "flights",
                 ConnectionStringSetting = "DbConnectionString")] 
                 DocumentClient client,
                 ILogger log)
         {
             try {
                 // URI for flight data collection
-                Uri collectionUri = UriFactory.CreateDocumentCollectionUri("vnaaats-net", "vnaaats-container");
+                Uri collectionUri = UriFactory.CreateDocumentCollectionUri("vnaaats-net", "flights");
 
                 // LINQ Query
                 IDocumentQuery<FlightDataDocument> query = client.CreateDocumentQuery<FlightDataDocument>(collectionUri)

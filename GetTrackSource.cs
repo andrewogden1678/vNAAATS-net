@@ -9,14 +9,15 @@ using Newtonsoft.Json;
 
 namespace vNAAATS.NET
 {
-    public static class GetNETInfo
+    public static class GetTrackSource
     {
-        [FunctionName("GetNetworkInfo")]
+        [FunctionName("GetTrackSource")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            string res = "Network version is 1.2";
+            // TODO: config file for this
+            string res = "1"; // 1 = event, 0 = normal
 
             return (ActionResult)new OkObjectResult(res);
         }

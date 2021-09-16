@@ -1,7 +1,6 @@
 using System;
-using Newtonsoft.Json;
 
-namespace vNAAATS.API {
+namespace vNAAATS.NET {
     public class FlightData {
         // Callsign
         public string callsign { get;  set; } 

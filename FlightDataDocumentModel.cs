@@ -2,7 +2,7 @@ using System;
 using Microsoft.Azure.Documents;
 using Newtonsoft.Json;
 
-namespace vNAAATS.API {
+namespace vNAAATS.NET {
     // Model to permit updating of data
     public class FlightDataDocument : Document {
         // Callsign

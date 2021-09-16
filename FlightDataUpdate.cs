@@ -12,14 +12,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace vNAAATS.API
+namespace vNAAATS.NET
 {
     public static class FlightDataUpdate
     {
         [FunctionName("FlightDataUpdate")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            [CosmosDB("vnaaats-net", "vnaaats-container",
+            [CosmosDB("vnaaats-net", "flights",
                 ConnectionStringSetting = "DbConnectionString")] 
                 DocumentClient client,
             ILogger log)
@@ -33,7 +33,7 @@ namespace vNAAATS.API
                 }
 
                 // URI for flight data collection
-                Uri collectionUri = UriFactory.CreateDocumentCollectionUri("vnaaats-net", "vnaaats-container");
+                Uri collectionUri = UriFactory.CreateDocumentCollectionUri("vnaaats-net", "flights");
 
                 // LINQ Query
                 var doc = client.CreateDocumentQuery<FlightDataDocument>(collectionUri)
