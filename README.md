@@ -1,3 +1,5 @@
 # vNAAATS-net
 
-Serverless network over Azure using Cosmos DB to network vNAAATS plugins together and feed the FDD.
+Serverless Azure Functions application for the vNAAATS suite of technology.
+
+API documentation to be added.
