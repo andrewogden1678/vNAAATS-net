@@ -19,7 +19,7 @@ namespace vNAAATS.NET.Utils {
     {
         // Static URLs
         private const string _trackUrl = "https://www.notams.faa.gov/common/nat.html";
-        private const string _fixesJson = "https://ganderoceanicoca.ams3.digitaloceanspaces.com/resources/data/fixes.json";
+        private const string _fixesJson = "https://api.vnaaats.net/GetAllNamedFixes";
 
         // List of months
         private static readonly string[] _months = { "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
@@ -198,13 +198,13 @@ namespace vNAAATS.NET.Utils {
                     }
                     else // If it is a waypoint
                     {
-                        JArray jsonFixes = JArray.Parse(JObject.Parse(fixesDataJson)["nat_fixes"].ToString());
+                        JArray jsonFixes = JArray.Parse(fixesDataJson);
 
                         try
                         {
-                            JToken jsonFix = jsonFixes.Where(fix => fix["fix"].ToString() == point).First();
+                            JToken jsonFix = jsonFixes.Where(fix => fix["name"].ToString() == point).First();
 
-                            finalRoute.Add(new Fix(jsonFix["fix"].ToString(), (double)jsonFix["lat"], (double)jsonFix["lon"]));
+                            finalRoute.Add(new Fix(jsonFix["name"].ToString(), (double)jsonFix["latitude"], (double)jsonFix["longitude"]));
                         }
                         catch (Exception)
                         {
