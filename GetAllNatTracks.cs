@@ -66,7 +66,7 @@ namespace vNAAATS_net
             if (eventTracks)
             {
                 // Event path
-                string path = "https://cdn.ganderoceanic.com/resources/data/eventTracks.json";
+                string path = "https://ganderoceanicoca.ams3.digitaloceanspaces.com/resources/data/eventTracks.json";
                 // Return
                 using (WebClient client = new WebClient())
                 {
@@ -76,7 +76,7 @@ namespace vNAAATS_net
             else if (concorde)
             {
                 // Concorde track path
-                string path = "https://ams3.digitaloceanspaces.com/ganderoceanicoca/resources/data/concordeTracks.json";
+                string path = "https://ganderoceanicoca.ams3.digitaloceanspaces.com/resources/data/concordeTracks.json";
 
                 // Return
                 using (WebClient client = new WebClient())

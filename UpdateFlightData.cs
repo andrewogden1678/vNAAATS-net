@@ -14,9 +14,9 @@ using Newtonsoft.Json;
 
 namespace vNAAATS.NET
 {
-    public static class FlightDataUpdate
+    public static class UpdateFlightData
     {
-        [FunctionName("FlightDataUpdate")]
+        [FunctionName("UpdateFlightData")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             [CosmosDB("vnaaats-net", "flights",

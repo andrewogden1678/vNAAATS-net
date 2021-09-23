@@ -8,9 +8,9 @@ using Microsoft.Extensions.Logging;
 
 namespace vNAAATS.NET
 {
-    public static class FlightDataNewPost
+    public static class PostFlightData
     {
-        [FunctionName("FlightDataNewPost")]
+        [FunctionName("PostFlightData")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req, 
             [CosmosDB("vnaaats-net", "flights",

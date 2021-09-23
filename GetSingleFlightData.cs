@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace vNAAATS.NET
 {
-    public static class FlightDataSingleGet
+    public static class GetSingleFlightData
     {
-        [FunctionName("FlightDataSingleGet")]
+        [FunctionName("GetSingleFlightData")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             [CosmosDB("vnaaats-net", "flights",
