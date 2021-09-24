@@ -8,17 +8,17 @@ namespace vNAAATS.NET.Models
         /// <summary>
         /// Name of fix
         /// </summary>
-        public string Name { get; set; }
+        public string name { get; set; }
 
         /// <summary>
         /// Latitude of fix
         /// </summary>
-        public double Latitude { get; set; }
+        public double latitude { get; set; }
 
         /// <summary>
         /// Longitude of fix
         /// </summary>
-        public double Longitude { get; set; }
+        public double longitude { get; set; }
 
         /// <summary>
         /// Constructor
@@ -28,9 +28,43 @@ namespace vNAAATS.NET.Models
         /// <param name="lon">Longitude</param>
         public Fix(string name, double lat = 0.0, double lon = 0.0)
         {
-            this.Name = name;
-            this.Latitude = lat;
-            this.Longitude = lon;
+            this.name = name;
+            this.latitude = lat;
+            this.longitude = lon;
+        }
+    }
+
+    /// <summary>
+    /// NAT fix to submit to database (including coordinates)
+    /// </summary>
+    public class DBFix
+    {
+        /// <summary>
+        /// Name of fix
+        /// </summary>
+        public string name { get; set; }
+
+        /// <summary>
+        /// Latitude of fix
+        /// </summary>
+        public string latitude { get; set; }
+
+        /// <summary>
+        /// Longitude of fix
+        /// </summary>
+        public string longitude { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name">Name</param>
+        /// <param name="lat">Latitude</param>
+        /// <param name="lon">Longitude</param>
+        public DBFix(string name, string lat = "0.0", string lon = "0.0")
+        {
+            this.name = name;
+            this.latitude = lat;
+            this.longitude = lon;
         }
     }
 }
