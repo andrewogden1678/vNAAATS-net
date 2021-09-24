@@ -29,14 +29,13 @@ namespace vNAAATS.NET
                 Uri collectionUri = UriFactory.CreateDocumentCollectionUri("vnaaats-net", "fixes");
 
                 // LINQ Query
-                IDocumentQuery<Fix> query = client.CreateDocumentQuery<Fix>(collectionUri)
+                IDocumentQuery<DBFix> query = client.CreateDocumentQuery<DBFix>(collectionUri, new FeedOptions { MaxItemCount = 1000 })
                     .AsDocumentQuery();
 
                 // Get results
-                List<Fix> results = new List<Fix>();
-                foreach (Fix fix in await query.ExecuteNextAsync()) {
-
-                    results.Add(fix); // add them all
+                List<DBFix> results = new List<DBFix>();
+                foreach (DBFix fix in await query.ExecuteNextAsync()) {
+                    results.Add(new DBFix(fix.name, fix.latitude, fix.longitude)); // add them all                    
                 }
 
                 // Return okay if found

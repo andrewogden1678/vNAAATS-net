@@ -50,7 +50,7 @@ namespace vNAAATS.NET
                 Uri collectionUri = UriFactory.CreateDocumentCollectionUri("vnaaats-net", "flights");
 
                 // LINQ Query
-                IDocumentQuery<FlightData> query = client.CreateDocumentQuery<FlightData>(collectionUri)
+                IDocumentQuery<FlightData> query = client.CreateDocumentQuery<FlightData>(collectionUri, new FeedOptions { MaxItemCount = 1000 })
                     .AsDocumentQuery();
                 
                 // Get results

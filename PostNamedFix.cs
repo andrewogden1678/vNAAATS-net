@@ -17,7 +17,7 @@ namespace vNAAATS.NET
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             [CosmosDB("vnaaats-net", "fixes",
-                ConnectionStringSetting = "DbConnectionString")] IAsyncCollector<DBFix> fixes,
+                ConnectionStringSetting = "DbConnectionString")] IAsyncCollector<object> fixes,
             ILogger log)
         {
             try {
